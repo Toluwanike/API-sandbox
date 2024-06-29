@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars Characters</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+    <h1>Star Wars Characters</h1>
+    <table id="character-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Height</th>
+                <th>Mass</th>
+                <th>Hair Color</th>
+                <th>Skin Color</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <div id="details" class="hidden">
+        <h2>Details</h2>
+        <p><strong>Name:</strong> <span id="detail-name"></span></p>
+        <p><strong>Height:</strong> <span id="detail-height"></span></p>
+        <p><strong>Mass:</strong> <span id="detail-mass"></span></p>
+        <p><strong>Hair Color:</strong> <span id="detail-hair-color"></span></p>
+        <p><strong>Skin Color:</strong> <span id="detail-skin-color"></span></p>
+        <p><strong>Eye Color:</strong> <span id="detail-eye-color"></span></p>
+        <p><strong>Birth Year:</strong> <span id="detail-birth-year"></span></p>
+        <p><strong>Gender:</strong> <span id="detail-gender"></span></p>
+        <button onclick="hideDetails()">Close</button>
+    </div>
+
+    <script >
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('https://swapi.dev/api/people/')
+                .then(response => response.json())
+                .then(data => {
+                    const characters = data.results;
+                    const tableBody = document.querySelector('#character-table tbody');
+        
+                    characters.forEach((character, index) => {
+                        const row = document.createElement('tr');
+        
+                        row.innerHTML = `
+                            <td>${character.name}</td>
+                            <td>${character.height}</td>
+                            <td>${character.mass}</td>
+                            <td>${character.hair_color}</td>
+                            <td>${character.skin_color}</td>
+                            <td><button onclick="showDetails(${index})">VIEW</button></td>
+                        `;
+        
+                        tableBody.appendChild(row);
+                    });
+        
+                    window.showDetails = (index) => {
+                        const character = characters[index];
+        
+                        document.getElementById('detail-name').textContent = character.name;
+                        document.getElementById('detail-height').textContent = character.height;
+                        document.getElementById('detail-mass').textContent = character.mass;
+                        document.getElementById('detail-hair-color').textContent = character.hair_color;
+                        document.getElementById('detail-skin-color').textContent = character.skin_color;
+                        document.getElementById('detail-eye-color').textContent = character.eye_color;
+                        document.getElementById('detail-birth-year').textContent = character.birth_year;
+                        document.getElementById('detail-gender').textContent = character.gender;
+        
+                        document.getElementById('details').classList.remove('hidden');
+                    };
+        
+                    window.hideDetails = () => {
+                        document.getElementById('detail-name').textContent = '';
+                        document.getElementById('detail-height').textContent = '';
+                        document.getElementById('detail-mass').textContent = '';
+                        document.getElementById('detail-hair-color').textContent = '';
+                        document.getElementById('detail-skin-color').textContent = '';
+                        document.getElementById('detail-eye-color').textContent = '';
+                        document.getElementById('detail-birth-year').textContent = '';
+                        document.getElementById('detail-gender').textContent = '';
+        
+                        document.getElementById('details').classList.add('hidden');
+                    };
+                });
+        });
+        
+   
+
+
+    </script>
+</body>
+</html>
